@@ -10,14 +10,12 @@ describe('business logic', () => {
 
     describe('getAllPeople', () => {
 
-
-
         it('should succeed', () =>
             logic.getAllPeople()
                 .then(res => {
                     expect(res).to.exist
                     expect(res.length).not.to.equal(0)
-                    expect(Object.keys(res[Math.round(res.length * Math.random())]).length).to.equal(16)
+                    res.forEach(ele => expect(Object.keys(ele).length).to.equal(16))
                 })
         )
 
@@ -39,4 +37,37 @@ describe('business logic', () => {
                 })
         )
     })
+
+    describe('filterPeopleWithVehicles', () => {
+        it('should retrieve people with vehicles', () =>
+            logic.getAllPeople()
+                .then(res => logic.filterPeopleWithVehicles(res))
+                .then(res => {
+                    expect(res).to.exist
+                    res.forEach(person => {
+                        expect(person.vehicles.length).not.to.equal(0)
+                    })
+                })
+        )
+
+        it('should fail on no array as input',() => 
+                logic.filterPeopleWithVehicles()
+                .catch(err => err)
+                .then(message => {
+                    expect(message).to.exist
+                    expect(message).to.equal('Input must be an array')
+                })
+        )
+
+        it('should fail on empty array as input',() => 
+                logic.filterPeopleWithVehicles([])
+                .catch(err => err)
+                .then(message => {
+                    expect(message).to.exist
+                    expect(message).to.equal('Input must be an array')
+                })
+        )
+    })
+
+
 })

@@ -27,6 +27,11 @@ const logic = {
                 let people = res.map(page => page.data.results)
                 return people.reduce((a, b) => [...a, ...b], [])
             })
+    },
+
+    filterPeopleWithVehicles(arr) {
+        if (!Array.isArray(arr) || !arr.length) return Promise.reject('Input must be an array')
+        return Promise.resolve().then(() => arr.filter(person => person.vehicles.lenth>0))
     }
 
 }
